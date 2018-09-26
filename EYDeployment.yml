@@ -9,7 +9,7 @@
     resgrp: "EYDemo_rg"
     location: "eastus"
     templateLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
-    paramsLink: 'https://raw.githubusercontent.com/amitanilsinha/EYDemo/master/azuredeploy.parameters.json'
+    paramsLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
     
   tasks:
   - name: Deploy Iaas ARM template
