@@ -8,7 +8,7 @@
     
     resgrp: "EYDemo_rg"
     location: "eastus"
-    templateLink: 'https://raw.githubusercontent.com/amitanilsinha/EYDemo/master/azuredeploy.json'
+    templateLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
     paramsLink: 'https://raw.githubusercontent.com/amitanilsinha/EYDemo/master/azuredeploy.parameters.json'
     
   tasks:
