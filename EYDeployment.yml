@@ -1,0 +1,22 @@
+---
+- name: CREATE ARM Deployment PLAYBOOK
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars:
+    # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
+    
+    resgrp: "EYDemo_rg"
+    location: "eastus"
+    templateLink: 'https://raw.githubusercontent.com/amitanilsinha/EYDemo/master/azuredeploy.json'
+    paramsLink: 'https://raw.githubusercontent.com/amitanilsinha/EYDemo/master/azuredeploy.parameters.json'
+    
+  tasks:
+  - name: Deploy Iaas ARM template
+    azure_rm_deployment:
+        state: present
+        resource_group_name: '{{ resgrp }}'
+        # location seems to be not optional
+        location: '{{ location }}'
+        template_link: '{{ templateLink }}'
+        parameters_link: '{{ paramsLink }}'

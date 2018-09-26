@@ -1,0 +1,46 @@
+    {
+        "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+        "contentVersion": "1.0.0.0",
+        "parameters": {
+            "keyVaultName": {
+                "value": "kunalvault"
+            },
+            "tenantId": {
+                "value": "c07828d0-52fc-4e9d-bf2e-50218fc794d6"
+            },
+            "accessPolicies": {
+                "value": [
+                    {
+                        "tenantId": "c07828d0-52fc-4e9d-bf2e-50218fc794d6",
+                        "objectId": "280a43f8-04ab-4fd3-8f45-b67336f19f17",
+                        "permissions": {
+                            "keys": ["all"],
+                            "secrets": ["all"]
+                        }
+                    },
+                    {
+                        "tenantId": "c07828d0-52fc-4e9d-bf2e-50218fc794d6",
+                        "objectId": "280a43f8-04ab-4fd3-8f45-b67336f19f17",
+                        "permissions": {
+                            "keys": ["all"],
+                            "secrets": ["all"]
+                        }
+                    }
+                ]
+            },
+            "secretsObject": {
+                "value": {
+					"secrets": [						
+						{
+							"secretName": "exampleSecret1",
+							"secretValue": "secretVaule1"
+						},
+						{
+							"secretName": "kunalSecret16",
+							"secretValue": "Maldahiyar@16"
+						}
+					]
+				}
+            }
+        }
+    }
