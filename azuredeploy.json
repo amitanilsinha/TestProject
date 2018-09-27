@@ -183,5 +183,4 @@
       "value": "[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
     }
   }
-]
 }
