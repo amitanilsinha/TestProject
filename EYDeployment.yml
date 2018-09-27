@@ -1,9 +1,21 @@
 - name: CREATE ARM Deployment PLAYBOOK
   hosts: localhost
   connection: local
-  task:
-    - azure_rm_deployment:
+  gather_facts: False
+  vars:
+  
+   resource_group_name: "Globant_demo_rg"
+    location: "eastus"
+    template_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
+    parameters_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json
+    
+     tasks:
+- name: Deploy ARM template
+    azure_rm_deployment:
         state: present
-        resource_group_name: dev-ops-cle
-        template_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
-        parameters_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json
+        resource_group_name: '{{ resource_group_name }}'
+        location: '{{ location }}'
+        template_link: '{{ templateLink1 }}'
+    
+        
+# parameters_link: '{{ paramsLink }}'
