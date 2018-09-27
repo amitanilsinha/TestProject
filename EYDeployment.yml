@@ -5,8 +5,8 @@
   gather_facts: False
   vars:
     # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
-    templatelink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
-    parameterslink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
+    templatelink: 'https://raw.githubusercontent.com/amitanilsinha/TestProject/master/azuredeploy.json'
+    parameterslink: 'https://raw.github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
     
   tasks:
   - name: Deploy ARM template
