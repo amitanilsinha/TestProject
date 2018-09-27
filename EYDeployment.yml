@@ -5,15 +5,15 @@
   gather_facts: False
   vars:
     # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
-    template_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
-    parameters_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json
+    templatelink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
+    parameterslink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
     
  tasks:
   - name: Deploy ARM template
     azure_rm_deployment:
         state: present
-        resource_group_name: '{{ resgrp }}'
+        resource_group_name: 'kunalrg' 
         # location seems to be not optional
-        location: "{{ location }}"
-        template_link: "{{ templateLink }}"
-       #parameters_link: "{{ paramsLink }}"
+        location: 'eastus'
+        template_link: '{{ templatelink }}'
+        parameters_link: '{{ parametersink }}'
