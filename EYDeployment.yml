@@ -13,6 +13,6 @@
         state: present
         resource_group_name: 'kunalrg' 
         # location seems to be not optional
-        location: 'eastus'
+        location: 'centralus'
         template_link: '{{ templatelink }}'
         parameters_link: '{{ parameterslink }}'
