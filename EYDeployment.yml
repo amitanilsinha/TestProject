@@ -11,7 +11,7 @@
   - name: Deploy ARM template
     azure_rm_deployment:
         state: present
-        resource_group_name: 'EY_demo_rg'
+        resource_group_name: 'kunalrg'
         # location seems to be not optional
         location: 'eastus'
         template_link: '{{ templateLink }}'
