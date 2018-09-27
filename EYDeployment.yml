@@ -16,4 +16,4 @@
         # location seems to be not optional
         location: 'eastus'
         template_link: '{{ templatelink }}'
-        parameters_link: '{{ parametersink }}'
+        parameters_link: '{{ parameterslink }}'
