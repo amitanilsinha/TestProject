@@ -4,7 +4,7 @@
   gather_facts: False
   vars:
   
-   resource_group_name: "Globant_demo_rg"
+    resource_group_name: "Globant_demo_rg"
     location: "eastus"
     template_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
     parameters_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json
