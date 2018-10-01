@@ -1,3 +1,4 @@
+---
 - name: CREATE ARM Deployment PLAYBOOK
   hosts: localhost
   connection: local
@@ -11,8 +12,8 @@
   - name: Deploy ARM template
     azure_rm_deployment:
         state: present
-        resource_group_name: 'kunalrg' 
+        resource_group_name: 'nitin'
         # location seems to be not optional
-        location: 'centralus'
-        template_link: '{{ templatelink }}'
-        parameters_link: '{{ parameterslink }}'
+        location: 'eastus'
+        template_link: '{{ templateLink }}'
+        parameters_link: '{{ paramsLink }}'
