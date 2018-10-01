@@ -9,7 +9,7 @@
     templatelink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
     parameterslink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
    
-tasks:
+  tasks:
     name: Deploy ARM template
     azure_rm_deployment:
         state: present
