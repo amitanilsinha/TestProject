@@ -1,4 +1,4 @@
-- name: CREATE ARM Deployment PLAYBOOK
+    - name: CREATE ARM Deployment PLAYBOOK
   hosts: localhost
   connection: local
   gather_facts: False
@@ -10,10 +10,10 @@
     parameterslink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
    
   tasks:
-    name: Deploy ARM template
-    azure_rm_deployment:
+    - name: Deploy Iaas ARM template
+      azure_rm_deployment:
         state: present
-        resource_group_name: '{{ resource_group_name }}'
+        resource_group_name: '{{ resgrp }}'
+       # location seems to be not optional
         location: '{{ location }}'
         template_link: '{{ templateLink }}'
-        parameters_link: '{{ parameterslink }}'
