@@ -1,4 +1,4 @@
-    - name: CREATE ARM Deployment PLAYBOOK
+- name: CREATE ARM Deployment PLAYBOOK
   hosts: localhost
   connection: local
   gather_facts: False
@@ -6,14 +6,24 @@
     
     resource_group_name: "kunal_rg"
     location: "eastus"
-    templatelink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
-    parameterslink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
+    templatelink: "https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json" 
+    #templateLink2: 'https://raw.githubusercontent.com/paddy6987/tower/master/key_vault.json'
+    parameterslink: "https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json"
    
   tasks:
-    - name: Deploy Iaas ARM template
-      azure_rm_deployment:
+  - name: Deploy ARM template
+    azure_rm_deployment:
         state: present
-        resource_group_name: '{{ resgrp }}'
-       # location seems to be not optional
+        resource_group_name: '{{ resource_group_name }}'
         location: '{{ location }}'
-        template_link: '{{ templateLink }}'
+        template_link: '{{ templateLink1 }}'
+        parameters_link: '{{ paramsLink }}'
+        
+#  - name: Deploy vault ARM template
+ #   azure_rm_deployment:
+ #       state: present
+ #       resource_group_name: '{{ resource_group_name }}'
+ #       location: '{{ location }}'
+ #       template_link: '{{ templateLink2 }}'     
+        
+        # parameters_link: '{{ paramsLink }}'
