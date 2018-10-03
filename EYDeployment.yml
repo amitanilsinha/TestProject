@@ -7,7 +7,6 @@
     resource_group_name: "kunal_rg"
     location: "eastus"
     templatelink: "https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json" 
-    #templateLink2: 'https://raw.githubusercontent.com/paddy6987/tower/master/key_vault.json'
     parameterslink: "https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json"
    
   tasks:
@@ -16,7 +15,7 @@
         state: present
         resource_group_name: '{{ resource_group_name }}'
         location: '{{ location }}'
-        template_link: '{{ templateLink }}'
-        parameters_link: '{{ parametersLink }}'
+        template_link: '{{ templatelink }}'
+        parameters_link: '{{ parameterslink }}'
         
 
