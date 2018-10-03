@@ -16,7 +16,7 @@
         state: present
         resource_group_name: '{{ resource_group_name }}'
         location: '{{ location }}'
-        template_link: '{{ templateLink1 }}'
-        parameters_link: '{{ paramsLink }}'
+        template_link: '{{ templateLink }}'
+        parameters_link: '{{ parametersLink }}'
         
 
