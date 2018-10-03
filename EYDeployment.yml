@@ -19,11 +19,4 @@
         template_link: '{{ templateLink1 }}'
         parameters_link: '{{ paramsLink }}'
         
-#  - name: Deploy vault ARM template
- #   azure_rm_deployment:
- #       state: present
- #       resource_group_name: '{{ resource_group_name }}'
- #       location: '{{ location }}'
- #       template_link: '{{ templateLink2 }}'     
-        
-        # parameters_link: '{{ paramsLink }}'
+
