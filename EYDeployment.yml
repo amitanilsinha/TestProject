@@ -5,12 +5,12 @@
   vars:
     # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
     templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
-    parameterslink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
+    #parameterslink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
           
   - name: Deploy Iaas ARM template
     azure_rm_deployment:
         state: present
         resource_group_name: '{{ resgrp }}'
-  #      # location seems to be not optional
+  #     location seems to be not optional
         location: '{{ location }}'
         template_link: '{{ templateLink }}'
