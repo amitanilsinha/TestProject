@@ -7,8 +7,8 @@
     templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
     #parameterslink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
           
-  - name: Deploy Iaas ARM template
-    azure_rm_deployment:
+- name: Deploy Iaas ARM template
+  azure_rm_deployment:
         state: present
         resource_group_name: '{{ resgrp }}'
   #     location seems to be not optional
