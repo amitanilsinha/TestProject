@@ -4,22 +4,22 @@
   tasks:
   - name: Create resource group
     azure_rm_resourcegroup:
-      name: kunalrg
+      name: Kunal_rg
       location: eastus
   - name: Create virtual network
     azure_rm_virtualnetwork:
-      resource_group: kunalrg
+      resource_group: Kunal_rg
       name: myVnet
       address_prefixes: "10.0.0.0/16"
   - name: Add subnet
     azure_rm_subnet:
-      resource_group: kunalrg
+      resource_group: Kunal_rg
       name: mySubnet
       address_prefix: "10.0.1.0/24"
       virtual_network: myVnet
   - name: Create public IP address
     azure_rm_publicipaddress:
-      resource_group: kunalrg
+      resource_group: Kunal_rg
       allocation_method: Static
       name: myPublicIP
     register: output_ip_address
@@ -28,7 +28,7 @@
       msg: "The public IP is {{ output_ip_address.state.ip_address }}."
   - name: Create Network Security Group that allows SSH
     azure_rm_securitygroup:
-      resource_group: kunalrg
+      resource_group: Kunal_rg
       name: myNetworkSecurityGroup
       rules:
         - name: SSH
@@ -39,7 +39,7 @@
           direction: Inbound
   - name: Create virtual network inteface card
     azure_rm_networkinterface:
-      resource_group: kunalrg
+      resource_group: Kunal_rg
       name: myNIC
       virtual_network: myVnet
       subnet: mySubnet
@@ -47,10 +47,10 @@
       security_group: myNetworkSecurityGroup
   - name: Create VM
     azure_rm_virtualmachine:
-      resource_group: kunalrg
+      resource_group: Kunal_rg
       name: myVM
       vm_size: Standard_DS1_v2
-      admin_username: kmaldahiyar
+      admin_username: azureuser
       ssh_password_enabled: false
       ssh_public_keys:
         - path: /home/azureuser/.ssh/authorized_keys
@@ -61,5 +61,3 @@
         publisher: OpenLogic
         sku: '7.5'
         version: latest
-
-
