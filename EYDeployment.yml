@@ -1,21 +1,23 @@
 - name: CREATE ARM Deployment PLAYBOOK
-  hosts: localhost
-  connection: local
-  gather_facts: False
-  vars:
-    
-    resource_group_name: "kunal_rg"
-    location: "eastus"
-    templatelink: "https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json" 
-    parameterslink: "https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json"
-   
-  tasks:
-  - name: Deploy ARM template
-    azure_rm_deployment:
-        state: present
-        resource_group_name: '{{ resource_group_name }}'
-        location: '{{ location }}'
-        template_link: '{{ templatelink }}'
-        parameters_link: '{{ parameterslink }}'
-        
+   hosts: localhost
+   connection: local
+   gather_facts: False
+   vars:
+
+      resource_group_name: "fresh_rg"
+      location: "centralus"
+      templateLink: 'https://github.com/amitanilsinha/EYDemo/blob/master/EYDeployment.yml'
+      parameterslink: "https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json"
+      
+
+   tasks:
+   - name: Deploy ARM template
+      azure_rm_deployment:
+          state: present
+          resource_group_name: '{{ resource_group_name }}'
+       #  location seems to be not optional 
+          location: '{{ location }}'
+          template_link: '{{ templateLink }}'
+          parameterslink: '{{ parameterslink }}'
+
 
