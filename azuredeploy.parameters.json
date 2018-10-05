@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "adminUsername": {
-            "value": "kmaldahiyar"
+            "value": "azureuser"
         },
         "adminPassword": {
-            "value": "admin123"
+            "value": "MyPassword123!!!"
         },
         "dnsLabelPrefix": {
             "value": "kunaldns"
