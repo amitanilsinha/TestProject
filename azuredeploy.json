@@ -12,15 +12,15 @@
     },
     "variables": {
       "dnsLabelPrefix": "kunalweb",
-      "adminUsername": "freshuser",
-      "adminPassword": "kunal12345",
+      "adminUsername": "azureuser",
+      "adminPassword": "MyPassword123!!!",
       "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'sawinvm')]",
       "nicName": "freshNic",
       "addressPrefix": "10.0.0.0/16",
       "subnetName": "Subnet",
       "subnetPrefix": "10.0.0.0/24",
       "publicIPAddressName": "myPublicIP",
-      "vmName": "freshvm",
+      "vmName": "wintestvm{{ rpfx }}",
       "vmExtName": "freshxtension",
       "virtualNetworkName": "freshVNET",
       "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
