@@ -11,10 +11,10 @@
   connection: local
   vars:
     resource_group: "{{ resource_group_name }}"
-    vm_name: wintestvm{{ rpfx }}
-    vm_user: azureuser
-    vm_password: MyPassword123!!!
-    location: eastus
+    vm_name: kunalvm{{ rpfx }}
+    vm_user: kmaldahiyar
+    vm_password: admin123
+    location: centralus
 
     # Below is UTF-16 Base64 encoding for:
       Invoke-Expression -Command ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1')); Enable-WSManCredSSP -Role Server -Force
