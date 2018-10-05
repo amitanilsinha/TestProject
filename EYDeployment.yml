@@ -1,3 +1,6 @@
+# Description
+# ===========
+# This playbook creates an Azure Windows VM with public IP. It also cobnfigures the machine to be accessible via Ansible using WinRM.
 # This playbook originally comes from @jborean93 (https://github.com/jborean93/ansible-win-demos)
 - hosts: localhost
   tasks:
@@ -10,11 +13,11 @@
   hosts: localhost
   connection: local
   vars:
-    resource_group: "{{ resource_group_name }}"
-    vm_name: kunalvm{{ rpfx }}
-    vm_user: kmaldahiyar
-    vm_password: admin123
-    location: centralus
+    resource_group: Kunal_Newrg
+    vm_name: wintestvm{{ rpfx }}
+    vm_user: azureuser
+    vm_password: MyPassword123!!!
+    location: eastus
 
     # Below is UTF-16 Base64 encoding for:
       Invoke-Expression -Command ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1')); Enable-WSManCredSSP -Role Server -Force
@@ -83,3 +86,4 @@
       port: 5986
       host: '{{azure_vm.properties.networkProfile.networkInterfaces[0].properties.ipConfigurations[0].properties.publicIPAddress.properties.ipAddress}}'
       timeout: 600
+
