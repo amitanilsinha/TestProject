@@ -2,65 +2,52 @@
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "diskType": {
+    "adminUsername": {
       "type": "string",
-      "defaultValue": "Standard_LRS",
-      "allowedValues": [
-        "Standard_LRS",
-        "Premium_LRS"
-      ],
+      "defaultValue": "admin",
       "metadata": {
-        "description": "Type of the Storage for disks"
+        "description": "Username for the Virtual Machine."
+      }
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "defaultValue": "Admin123",
+      "metadata": {
+        "description": "Password for the Virtual Machine."
+      }
+    },
+    "dnsNameForPublicIP": {
+      "type": "string",
+      "defaultValue": "NEW-IP",
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine."
       }
     },
     "vmName": {
       "type": "string",
+      "defaultValue": "myVM",
       "metadata": {
-        "description": "Name of the VM"
+        "description": "Vitual machine's unique name."
       }
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_A2",
+      "defaultValue": "Standard_D1",
       "metadata": {
-        "description": "Size of the VM"
+        "description": "Virtual machine size"
       }
     },
-    "imageSKU": {
+    "windowsOSVersion": {
       "type": "string",
       "defaultValue": "2012-R2-Datacenter",
       "allowedValues": [
         "2008-R2-SP1",
         "2012-Datacenter",
-        "2012-R2-Datacenter"
+        "2012-R2-Datacenter",
+        "Windows-Server-Technical-Preview"
       ],
       "metadata": {
-        "description": "Image SKU"
-      }
-    },
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Admin username"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Admin password"
-      }
-    },
-    "modulesUrl": {
-      "type": "string",
-      "metadata": {
-        "description": "URL for the DSC configuration module. NOTE: Can be a Github url(raw) to the zip file"
-      }
-    },
-    "configurationFunction": {
-      "type": "string",
-      "defaultValue": "ContosoWebsite.ps1\\ContosoWebsite",
-      "metadata": {
-        "description": "DSC configuration function to call"
+        "description": "The Windows version for the VM. This will pick a fully patched image of this given Windows version. Allowed values: 2008-R2-SP1, 2012-Datacenter, 2012-R2-Datacenter, Windows-Server-Technical-Preview."
       }
     },
     "location": {
@@ -72,19 +59,20 @@
     }
   },
   "variables": {
-    "virtualNetworkName": "dscVNET",
-    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
-    "vnetAddressPrefix": "10.0.0.0/16",
-    "subnet1Name": "dscSubnet-1",
-    "subnet1Prefix": "10.0.0.0/24",
-    "subnet1Ref": "[concat(variables('vnetID'),'/subnets/', variables('subnet1Name'))]",
-    "publicIPAddressType": "Dynamic",
-    "publicIPAddressName": "dscPubIP",
-    "nicName": "dscNIC",
     "imagePublisher": "MicrosoftWindowsServer",
     "imageOffer": "WindowsServer",
-    "vmExtensionName": "dscExtension",
-    "vmExtName": "dscExt"
+    "OSDiskName": "osdiskforwindowssimple",
+    "nicName": "myVMNic",
+    "addressPrefix": "10.0.0.0/16",
+    "subnetName": "Subnet",
+    "subnetPrefix": "10.0.0.0/24",
+    "diskStorageType": "Standard_LRS",
+    "publicIPAddressName": "myPublicIP",
+    "publicIPAddressType": "Dynamic",
+    "vmStorageAccountContainerName": "vhds",
+    "vmSize": "Standard_D1",
+    "virtualNetworkName": "MyVNET",
+    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
   },
   "resources": [
     {
@@ -93,7 +81,10 @@
       "name": "[variables('publicIPAddressName')]",
       "location": "[parameters('location')]",
       "properties": {
-        "publicIPAllocationMethod": "[variables('publicIPAddressType')]"
+        "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
+        }
       }
     },
     {
@@ -104,14 +95,14 @@
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[variables('vnetAddressPrefix')]"
+            "[variables('addressPrefix')]"
           ]
         },
         "subnets": [
           {
-            "name": "[variables('subnet1Name')]",
+            "name": "[variables('subnetName')]",
             "properties": {
-              "addressPrefix": "[variables('subnet1Prefix')]"
+              "addressPrefix": "[variables('subnetPrefix')]"
             }
           }
         ]
@@ -133,10 +124,10 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('publicIPAddressName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
               },
               "subnet": {
-                "id": "[variables('subnet1Ref')]"
+                "id": "[variables('subnetRef')]"
               }
             }
           }
@@ -153,7 +144,7 @@
       ],
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[parameters('vmSize')]"
+          "vmSize": "[variables('vmSize')]"
         },
         "osProfile": {
           "computerName": "[parameters('vmName')]",
@@ -164,49 +155,42 @@
           "imageReference": {
             "publisher": "[variables('imagePublisher')]",
             "offer": "[variables('imageOffer')]",
-            "sku": "[parameters('imageSKU')]",
+            "sku": "[parameters('windowsOSVersion')]",
             "version": "latest"
           },
           "osDisk": {
-            "name": "[concat(parameters('vmName'), '_OSDisk')]",
+            "name": "[concat(parameters('vmName'),'_OSDisk')]", 
             "caching": "ReadWrite",
             "createOption": "FromImage",
             "managedDisk": {
-              "storageAccountType": "[parameters('diskType')]"
+                "storageAccountType": "[variables('diskStorageType')]" 
             }
           }
         },
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
             }
           ]
         }
       }
     },
     {
-    "type": "Microsoft.Compute/virtualMachines/extensions",
-    "name": "[concat(parameters('vmName'),'/', variables('vmExtName'))]",
-    "apiVersion": "2015-05-01-preview",
-    "location": "[parameters('location')]",
-    "dependsOn": [
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "name": "[concat(parameters('vmName'),'/', 'fileSecurityExtension')]",
+      "apiVersion": "2015-05-01-preview",
+      "location": "[parameters('location')]",
+      "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', parameters('vmName'))]"
-    ],
-    "properties": {
-        "publisher": "Microsoft.Compute",
-        "type": "CustomScriptExtension",
-        "typeHandlerVersion": "1.9",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-            "fileUris": [
-                "https://cloudshellstoragecent867.blob.core.windows.net/new/Createfile.ps1"
-            ]
-        },
-        "protectedSettings": {
-            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File Createfile.ps1"
-        }
+      ],
+      "properties": {
+        "publisher": "ESET",
+        "type": "FileSecurity",
+        "typeHandlerVersion": "6.5",
+        "settings": null,
+        "protectedSettings": null
+      }
     }
-}
   ]
 }
