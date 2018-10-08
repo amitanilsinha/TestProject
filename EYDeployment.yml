@@ -12,7 +12,7 @@
   - name: Deploy ARM template
     azure_rm_deployment:
         state: present
-        resource_group_name: '{{ resgrp }}'
+        resource_group_name: '{{ resourceGroup }}'
         # location seems to be not optional
         location: "centralus"
         template_link: '{{ templateLink }}'
