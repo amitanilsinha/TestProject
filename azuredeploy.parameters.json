@@ -1,21 +1,57 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "adminUsername": {
-            "value": "azureuser"
+        "extensions_ansible_tower_extension_storageAccountName": {
+            "value": null
         },
-        "adminPassword": {
-            "value": "MyPassword123!!!"
+        "extensions_ansible_tower_extension_storageAccountKey": {
+            "value": null
         },
-        "dnsLabelPrefix": {
-            "value": "kunaldns"
+        "extensions_ansible_tower_extension_commandToExecute": {
+            "value": null
         },
-        "windowsOSVersion": {
-            "value": "2012-R2-Datacenter"
+        "availabilitySets_tower_avset_name": {
+            "value": null
         },
-        "workspaceName": {
-            "value": "GETworkSpaceName"
+        "virtualNetworks_ansible_vnet_name": {
+            "value": null
+        },
+        "virtualMachines_ansibletowervm_name": {
+            "value": null
+        },
+        "networkSecurityGroups_tower_nsg_name": {
+            "value": null
+        },
+        "publicIPAddresses_public_ip_tower_name": {
+            "value": null
+        },
+        "networkInterfaces_ansibletowervm_nic_name": {
+            "value": null
+        },
+        "storageAccounts_dgstoragegzvee2kfz77m2_name": {
+            "value": null
+        },
+        "storageAccounts_towstoragegzvee2kfz77m2_name": {
+            "value": null
+        },
+        "subnets_tower_subnet_name": {
+            "value": null
+        },
+        "securityRules_allow_80_name": {
+            "value": null
+        },
+        "securityRules_allow_443_name": {
+            "value": null
+        },
+        "securityRules_allow_8080_name": {
+            "value": null
+        },
+        "securityRules_default_allow_ssh_name": {
+            "value": null
+        },
+        "extensions_ansible_tower_extension_name": {
+            "value": null
         }
     }
 }
