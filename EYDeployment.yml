@@ -4,7 +4,7 @@
 # This playbook originally comes from @jborean93 (https://github.com/jborean93/ansible-win-demos)
 - hosts: localhost
   tasks:
-    - name: Prepare random postfix
+- name: Prepare random postfix
       set_fact:
         rpfx: "{{ 100000 | random }}"
       run_once: yes
