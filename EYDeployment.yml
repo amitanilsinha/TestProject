@@ -3,9 +3,9 @@
   connection: local
   gather_facts: False
   vars:
-    # Variables 'resourceGroup' and 'location' need to be provided at command line with arg --extra-vars
+    Variables 'resourceGroup' and 'location' need to be provided at command line with arg --extra-vars
     templateLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
-    # No parameters required for this template
+    No parameters required for this template
     paramsLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
    
   tasks:
