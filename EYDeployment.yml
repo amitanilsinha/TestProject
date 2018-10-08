@@ -1,19 +1,18 @@
-- name: CREATE iaas 
+- name: CREATE ARM Deployment PLAYBOOK
   hosts: localhost
   connection: local
   gather_facts: False
-  vars:
-    Variables 'resourceGroup' and 'location' need to be provided at command line with arg --extra-vars
-    templateLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
-    No parameters required for this template
-    paramsLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
+      
+    #templateLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json' 
+    #paramsLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
+   
    
   tasks:
   - name: Deploy ARM template
     azure_rm_deployment:
         state: present
-        resource_group_name: '{{ resourceGroup }}'
-        # location seems to be not optional
-        location: "centralus"
-        template_link: '{{ templateLink }}'
-        parameters_link: '{{ paramsLink }}'
+        resource_group_name: "Globant_rg"
+        location: "eastus"
+        template_link: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
+       # parameters_link: '{{ paramsLink }}'
+        
