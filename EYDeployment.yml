@@ -13,7 +13,7 @@
   hosts: localhost
   connection: local
   vars:
-    resource_group: amit_Newrg
+    resource_group: kunal_RG3
     vm_name: wintestvm{{ rpfx }}
     vm_user: EYuser
     vm_password: MyPassword123!!!
