@@ -11,21 +11,18 @@
       }
     },
     "variables": {
-      "dnsLabelPrefix": "kunaldns",
-      "adminUsername": "EYDemoVM",
-      "adminPassword": "Maldahiyar@16",
-      "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'sawinvm')]",
-      "nicName": "EYVMNic",
-      "addressPrefix": "10.0.0.0/16",
-      "subnetName": "Subnet",
-      "subnetPrefix": "10.0.0.0/24",
-      "publicIPAddressName": "PublicIP",
-      "vmName": "EYWinVM",
-      "virtualNetworkName": "EYVNET",
-      "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
-    },
-    "resources": [
-{
+    "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'sawinvm')]",
+    "nicName": "myVMNic",
+    "addressPrefix": "10.0.0.0/16",
+    "subnetName": "Subnet",
+    "subnetPrefix": "10.0.0.0/24",
+    "publicIPAddressName": "myPublicIP",
+    "vmName": "SimpleWinVM",
+    "virtualNetworkName": "MyVNET",
+    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', variables('virtualNetworkName'), variables('subnetName'))]"
+  },
+  "resources": [
+    {
                 "type": "Microsoft.Compute/virtualMachines/extensions",
                 "name": "[concat(variables('vmName'),'/', parameters('chef_vm_extension_type'))]",
                 "apiVersion": "2017-12-01",
