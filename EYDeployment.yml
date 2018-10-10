@@ -3,19 +3,18 @@
   connection: local
   gather_facts: False
   vars:
-    # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
     
-    resgrp: "EYDemo_rg"
+    resource_group_name: "Azure_infra_rg"
     location: "eastus"
-    templateLink: 'https://raw.githubusercontent.com/amitanilsinha/TestProject/master/azuredeploy.json'
-    paramsLink: 'https://raw.githubusercontent.com/amitanilsinha/TestProject/master/azuredeploy.parameters.json'
-    
+    templateLink1: 'https://raw.githubusercontent.com/paddy6987/tower/master/new_vm.json' 
+    templateLink2: 'https://raw.githubusercontent.com/paddy6987/tower/master/key_vault.json'
+    paramsLink: 'https://raw.githubusercontent.com/paddy6987/tower/master/vm_parameter.json'
+   
   tasks:
-  - name: Deploy Iaas ARM template
+  - name: Deploy ARM template
     azure_rm_deployment:
         state: present
-        resource_group_name: '{{ resgrp }}'
-        # location seems to be not optional
+        resource_group_name: '{{ resource_group_name }}'
         location: '{{ location }}'
-        template_link: '{{ templateLink }}'
+        template_link: '{{ templateLink1 }}'
         parameters_link: '{{ paramsLink }}'
