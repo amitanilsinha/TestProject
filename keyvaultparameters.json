@@ -32,12 +32,12 @@
                 "value": {
 					"secrets": [						
 						{
-							"secretName": "exampleSecret1",
-							"secretValue": "secretVaule1"
+							"secretName": "kunalSecret1",
+							"secretValue": "secretValue1"
 						},
 						{
-							"secretName": "kunalSecret16",
-							"secretValue": "Maldahiyar@16"
+							"secretName": "kunalSecret2",
+							"secretValue": "secretValue2"
 						}
 					]
 				}
