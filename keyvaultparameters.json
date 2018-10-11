@@ -6,21 +6,21 @@
                 "value": "kunalvault"
             },
             "tenantId": {
-                "value": "c07828d0-52fc-4e9d-bf2e-50218fc794d6"
+                "value": "202b0ed3-0a1e-4cb1-9b43-c3af9d884aaa"
             },
             "accessPolicies": {
                 "value": [
                     {
-                        "tenantId": "c07828d0-52fc-4e9d-bf2e-50218fc794d6",
-                        "objectId": "280a43f8-04ab-4fd3-8f45-b67336f19f17",
+                        "tenantId": "202b0ed3-0a1e-4cb1-9b43-c3af9d884aaa",
+                        "objectId": "6136100c-caa3-4512-9944-cd4f806331eb",
                         "permissions": {
                             "keys": ["all"],
                             "secrets": ["all"]
                         }
                     },
                     {
-                        "tenantId": "c07828d0-52fc-4e9d-bf2e-50218fc794d6",
-                        "objectId": "280a43f8-04ab-4fd3-8f45-b67336f19f17",
+                        "tenantId": "202b0ed3-0a1e-4cb1-9b43-c3af9d884aaa",
+                        "objectId": "6136100c-caa3-4512-9944-cd4f806331eb",
                         "permissions": {
                             "keys": ["all"],
                             "secrets": ["all"]
