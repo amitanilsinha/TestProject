@@ -33,11 +33,11 @@
 					"secrets": [						
 						{
 							"secretName": "kunalSecret1",
-							"secretValue": "secretValue1"
+							"secretValue": "MyPassword123!!!"
 						},
 						{
 							"secretName": "kunalSecret2",
-							"secretValue": "secretValue2"
+							"secretValue": "MyPassword123!!!"
 						}
 					]
 				}
