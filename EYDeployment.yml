@@ -4,16 +4,28 @@
   gather_facts: False
   vars:
     
+    templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/keyvault.json'
+    paramskey: 'https://github.com/amitanilsinha/TestProject/blob/master/keyvaultparameters.json'
     resource_group_name: "Azure_infra_rg"
     location: "eastus"
-    templateLink1: 'https://raw.githubusercontent.com/amitanilsinha/TestProject/master/azuredeploy.json' 
-    paramsLink: 'https://raw.githubusercontent.com/amitanilsinha/TestProject/master/azuredeploy.parameters.json'
+#    templateLink1: 'https://raw.githubusercontent.com/amitanilsinha/TestProject/master/azuredeploy.json' 
+#    paramsLink: 'https://raw.githubusercontent.com/amitanilsinha/TestProject/master/azuredeploy.parameters.json'
    
-  tasks:
-  - name: Deploy ARM template
+   tasks:
+  - name: Deploy vault key template
     azure_rm_deployment:
         state: present
-        resource_group_name: '{{ resource_group_name }}'
+        resource_group_name: '{{ resgrp }}'
+        # location seems to be not optional
         location: '{{ location }}'
-        template_link: '{{ templateLink1 }}'
-        parameters_link: '{{ paramsLink }}'
+        template_link: '{{ templatekey }}'
+        parameters_link: '{{ paramskey }}' 
+        
+        
+#  - name: Deploy Iaas ARM template
+#    azure_rm_deployment:
+#        state: present
+#       resource_group_name: '{{ resgrp }}'
+#      # location seems to be not optional
+#        location: '{{ location }}'
+#        template_link: '{{ templateLink }}'
