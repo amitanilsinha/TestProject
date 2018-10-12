@@ -3,7 +3,7 @@
         "contentVersion": "1.0.0.0",
         "parameters": {
             "keyVaultName": {
-                "value": "kunalvault"
+                "value": "kunalvault2"
             },
             "tenantId": {
                 "value": "761ae355-39eb-478f-9c99-a8be06a9c81a"
