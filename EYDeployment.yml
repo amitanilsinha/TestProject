@@ -7,7 +7,7 @@
     templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/keyvault.json'
     paramskey: 'https://github.com/amitanilsinha/TestProject/blob/master/keyvaultparameters.json'
     
-    
+tasks  
   - name: Deploy Iaas ARM template_1
     azure_rm_deployment:
         state: present
