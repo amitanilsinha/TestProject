@@ -9,7 +9,7 @@
     paramsLink: 'https://raw.githubusercontent.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
    
   tasks:
-  - name: Deploy ARM template
+- name: Deploy ARM template
     azure_rm_deployment:
         state: present
         resource_group_name: 'KUNAL_NEW_RG'
