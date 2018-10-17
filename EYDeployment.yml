@@ -1,3 +1,4 @@
+---
 - name: CREATE ARM Deployment PLAYBOOK
   hosts: localhost
   connection: local
@@ -6,12 +7,16 @@
     # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
     templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/keyvault.json'
     paramskey: 'https://github.com/amitanilsinha/TestProject/blob/master/keyvaultparameters.json'
-    
-tasks  
-  - name: Deploy Iaas ARM template_1
+   
+  tasks:
+  - name: Deploy ARM template
     azure_rm_deployment:
         state: present
-       resource_group_name: '{{ resgrp }}'
-      # location seems to be not optional
-        location: '{{ location }}'
+        resource_group_name: 'KUNALNEW_RG'
+        # location seems to be not optional
+        location: 'Central India'
         template_link: '{{ templateLink }}'
+        parameters_link: '{{ paramsLink }}'
+    
+    
+    
