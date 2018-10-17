@@ -6,11 +6,11 @@
   vars:
     # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
     templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
-    parameters: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
+    paramsLink: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
    
   tasks:
-- name: Deploy ARM template
-  azure_rm_deployment:
+  - name: Deploy ARM template
+    azure_rm_deployment:
         state: present
         resource_group_name: 'KUNAL_NEW_RG'
         # location seems to be not optional
