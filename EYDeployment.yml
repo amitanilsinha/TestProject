@@ -5,18 +5,18 @@
   gather_facts: False
   vars:
     # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
-    templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/EYDeployment.yml'
+    templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.json'
     parameters: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
    
   tasks:
   - name: Deploy ARM template
     azure_rm_deployment:
         state: present
-        resource_group_name: 'KUNALNEW_RG'
+        resource_group_name: 'KUNAL_NEW_RG'
         # location seems to be not optional
         location: 'Central India'
         template_link: '{{ templateLink }}'
-        parameters_link: '{{ parametersLink }}'
+        parameters_link: '{{ paramsLink }}'
     
     
     
