@@ -5,8 +5,8 @@
   gather_facts: False
   vars:
     # Variables 'resgrp' and 'location' need to be provided at command line with arg --extra-vars
-    templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/keyvault.json'
-    paramskey: 'https://github.com/amitanilsinha/TestProject/blob/master/keyvaultparameters.json'
+    templatekey: 'https://github.com/amitanilsinha/TestProject/blob/master/EYDeployment.yml'
+    parameters: 'https://github.com/amitanilsinha/TestProject/blob/master/azuredeploy.parameters.json'
    
   tasks:
   - name: Deploy ARM template
@@ -16,7 +16,7 @@
         # location seems to be not optional
         location: 'Central India'
         template_link: '{{ templateLink }}'
-        parameters_link: '{{ paramsLink }}'
+        parameters_link: '{{ parametersLink }}'
     
     
     
