@@ -34,3 +34,23 @@ Set-AzureRmResource -PropertyObject $PropertiesObject -ResourceGroupName yellowR
 # Swap the verified/warmed up staging slot into production.
 Switch-AzureRmWebAppSlot -Name $webappname -ResourceGroupName yellowResourceGroup `
 -SourceSlotName staging -DestinationSlotName production
+# Get list of locations and select one.
+Get-AzureRmLocation | select Location 
+$location = "central india"
+
+# Create a new resource group.
+$resourceGroup = "yellowResourceGroup"
+New-AzureRmResourceGroup -Name yellowResourceGroup -Location $location central india
+
+# Set the name of the storage account and the SKU name. 
+$storageAccountName = "yellowstorage"
+$skuName = "Standard_LRS"
+
+# Create the storage account.
+$storageAccount = New-AzureRmStorageAccount -ResourceGroupName yellowResourceGroup `
+  -Name yellowstorage `
+  -Location central india `
+  -SkuName $skuName
+
+# Retrieve the context. 
+$ctx = $storageAccount.Context
