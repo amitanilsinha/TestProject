@@ -2,10 +2,10 @@
 $Random=(New-Guid).ToString().Substring(0,8)
 
 # Variables
-$ResourceGroup="yellowresourceGroup$Random"
-$AppName="yellowwebappwithSQL$Random"
-$Location="Central India"
-$ServerName="yellowwebappwithSQL$Random"
+$ResourceGroup="LGrg$Random"
+$AppName="LGAppwithSQL$Random"
+$Location="southindia"
+$ServerName="LGAppwithSQL$Random"
 $StartIP="0.0.0.0"
 $EndIP="0.0.0.0"
 $Username="ServerAdmin"
