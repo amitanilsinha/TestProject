@@ -1,37 +1,82 @@
-# Variables
+Connect-AzureRmAccount 
+# Replace the following URL with a public GitHub repo URL
+$gitrepo="https://github.com/amitanilsinha.git"
+#Variables
 $ResourceGroup="SONYRG"
 $AppName="SONYAPP"
-$Location="southindia"
-$ServerName="SONYSERVER"
+$Location="westus"
+$ServerName="SONYSERVER2"
 $StartIP="0.0.0.0"
 $EndIP="0.0.0.0"
 $Username="kunal"
 $Password="Admin@123"
 $SqlServerPassword=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Username,(ConvertTo-SecureString -String $Password -AsPlainText -Force)
+$webappname="SONYWEBapp$(Get-Random)"
+$vmName="SONYRGVM"
+# Create a resource group.
+New-AzureRmResourceGroup -Name SONYRG -Location $location
 
-# Create a Resource Group
-New-AzureRMResourceGroup -Name $ResourceGroup -Location $Location
+# Create an App Service plan in Free tier.
+New-AzureRmAppServicePlan -Name $webappname -Location $location `
+-ResourceGroupName SONYRG -Tier Free
 
-# Create an App Service Plan
-New-AzureRMAppservicePlan -Name WebAppwithSQLPlan -ResourceGroupName $ResourceGroup -Location $Location -Tier Basic
+# Create a web app.
+New-AzureRmWebApp -Name $webappname -Location $location `
+-AppServicePlan $webappname -ResourceGroupName SONYRG
 
-# Create a Web App in the App Service Plan
-New-AzureRMWebApp -Name $AppName -ResourceGroupName $ResourceGroup -Location $Location -AppServicePlan WebAppwithSQLPlan
-
-# Create a SQL Database Server
-New-AzureRMSQLServer -ServerName $ServerName -Location $Location -SqlAdministratorCredentials $SqlServerPassword -ResourceGroupName $ResourceGroup
+# Upgrade App Service plan to Standard tier (minimum required by deployment slots)
+Set-AzureRmAppServicePlan -Name $webappname -ResourceGroupName SONYRG `
+-Tier Standard
 
 #Create a deployment slot with the name "staging".
-New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName EY `
+New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG `
+-Slot staging
+Set-AzureRmResource -PropertyObject $PropertiesObject -ResourceGroupName SONYRG `
+-ResourceType Microsoft.Web/sites/slots/sourcecontrols `
+-ResourceName $webappname/staging/web -ApiVersion 2015-08-01 -Force
+
+# Create user object
+$cred = Get-Credential -Message "Enter a username and password for the virtual machine."
+
+# Create a subnet configuration
+$subnetConfig = New-AzureRmVirtualNetworkSubnetConfig -Name mySubnet -AddressPrefix 192.168.1.0/24
+
+# Create a virtual network
+$vnet = New-AzureRmVirtualNetwork -ResourceGroupName $resourceGroup -Location $location `
+  -Name MYvNET -AddressPrefix 192.168.0.0/16 -Subnet $subnetConfig
+
+# Create a public IP address and specify a DNS name
+$pip = New-AzureRmPublicIpAddress -ResourceGroupName $resourceGroup -Location $location `
+  -Name "mypublicdns$(Get-Random)" -AllocationMethod Static -IdleTimeoutInMinutes 4
+
+# Create an inbound network security group rule for port 3389
+$nsgRuleRDP = New-AzureRmNetworkSecurityRuleConfig -Name myNetworkSecurityGroupRuleRDP  -Protocol Tcp `
+  -Direction Inbound -Priority 1000 -SourceAddressPrefix * -SourcePortRange * -DestinationAddressPrefix * `
+  -DestinationPortRange 3389 -Access Allow
+
+# Create a network security group
+$nsg = New-AzureRmNetworkSecurityGroup -ResourceGroupName $resourceGroup -Location $location `
+  -Name myNetworkSecurityGroup -SecurityRules $nsgRuleRDP
+
+# Create a virtual network card and associate with public IP address and NSG
+$nic = New-AzureRmNetworkInterface -Name myNic -ResourceGroupName $resourceGroup -Location $location `
+  -SubnetId $vnet.Subnets[0].Id -PublicIpAddressId $pip.Id -NetworkSecurityGroupId $nsg.Id
+
+# Create a virtual machine configuration
+$vmConfig = New-AzureRmVMConfig -VMName $vmName -VMSize Standard_D1 | `
+Set-AzureRmVMOperatingSystem -Windows -ComputerName $vmName -Credential $cred | `
+Set-AzureRmVMSourceImage -PublisherName MicrosoftWindowsServer -Offer WindowsServer -Skus 2016-Datacenter -Version latest | `
+Add-AzureRmVMNetworkInterface -Id $nic.Id
+
+# Create a virtual machine
+New-AzureRmVM -ResourceGroupName $resourceGroup -Location $location -VM $vmConfig
+
+# Create a SQL Database Server
+New-AzureRMSQLServer -ServerName $ServerName -Location $Location -SqlAdministratorCredentials $SqlServerPassword -ResourceGroupName $ResourceGroup `
+
+#Create a deployment slot with the name "staging".
+New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG `
 -Slot staging
 
-# Configure GitHub deployment to the staging slot from your GitHub repo and deploy once.
-$PropertiesObject = @{
-    repoUrl = "$gitrepo";
-    branch = "master";
-    
 # Create SQL Database in SQL Database Server
-New-AzureRMSQLDatabase -ServerName $ServerName -DatabaseName MySampleDatabase -ResourceGroupName $ResourceGroup `
-
-# Assign Connection String to Connection String 
-Set-AzureRMWebApp -ConnectionStrings @{ MyConnectionString = @{ Type="SQLAzure"; Value ="Server=tcp:$ServerName.database.windows.net;Database=MySampleDatabase;User ID=$Username@$ServerName;Password=$password;Trusted_Connection=False;Encrypt=True;" } } -Name $AppName -ResourceGroupName $ResourceGroup
+New-AzureRMSQLDatabase -ServerName $ServerName -DatabaseName SONYAPP -ResourceGroupName $ResourceGroup `
