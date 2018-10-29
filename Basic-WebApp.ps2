@@ -1,15 +1,12 @@
-# Generates a Random Value
-$Random=(New-Guid).ToString().Substring(0,8)
-
 # Variables
-$ResourceGroup="LGrg$Random"
-$AppName="LGAppwithSQL$Random"
+$ResourceGroup="SONYRG"
+$AppName="SONYAPP"
 $Location="southindia"
-$ServerName="LGAppwithSQL$Random"
+$ServerName="SONYSERVER"
 $StartIP="0.0.0.0"
 $EndIP="0.0.0.0"
-$Username="ServerAdmin"
-$Password="Welcome@123"
+$Username="kunal"
+$Password="Admin@123"
 $SqlServerPassword=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Username,(ConvertTo-SecureString -String $Password -AsPlainText -Force)
 
 # Create a Resource Group
@@ -24,9 +21,15 @@ New-AzureRMWebApp -Name $AppName -ResourceGroupName $ResourceGroup -Location $Lo
 # Create a SQL Database Server
 New-AzureRMSQLServer -ServerName $ServerName -Location $Location -SqlAdministratorCredentials $SqlServerPassword -ResourceGroupName $ResourceGroup
 
-# Create Firewall Rule for SQL Database Server
-New-AzureRmSqlServerFirewallRule -FirewallRuleName "AllowYourIp" -StartIpAddress $StartIP -EndIPAddress $EndIP -ServerName $ServerName -ResourceGroupName $ResourceGroup
+#Create a deployment slot with the name "staging".
+New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName EY `
+-Slot staging
 
+# Configure GitHub deployment to the staging slot from your GitHub repo and deploy once.
+$PropertiesObject = @{
+    repoUrl = "$gitrepo";
+    branch = "master";
+    
 # Create SQL Database in SQL Database Server
 New-AzureRMSQLDatabase -ServerName $ServerName -DatabaseName MySampleDatabase -ResourceGroupName $ResourceGroup
 
