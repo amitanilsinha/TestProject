@@ -4,6 +4,7 @@ $gitrepo="https://github.com/amitanilsinha.git"
 #Variables
 $ResourceGroup="SONYRG"
 $Location="westus"
+$webappname="SONYAPP"
 $StorageName="kunalnewstorage"
 $ServerName="SONYSERVER2"
 $StartIP="0.0.0.0"
@@ -16,19 +17,17 @@ $vmName="SONYRG VM"
 # Create a resource group.
 New-AzureRmResourceGroup -Name SONYRG  -Location $location
 
+# Create an App Service plan
+$appServicePlan = New-AzureRmAppServicePlan -Name SONYRG Asp -ResourceGroupName SONYRG  -Tier Basic -Location westus
+
+# Create an webApp
+$webApp = New-AzureRmWebApp -ResourceGroupName SONYRG  -AppServicePlan $appServicePlan.Id -Name SONYRG Site -Location westus
+
 # Create Storage Account
 New-AzureRMStorageAccount -Name $StorageName -ResourceGroupName $ResourceGroup -Location $Location -SkuName Standard_LRS
 
 # Get Connection String for Storage Account
 $StorageKey=(Get-AzureRMStorageAccountKey -ResourceGroupName $ResourceGroup -Name $StorageName).Value[0]
-
-#Create a deployment slot with the name "staging".
-New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG  `
--Slot staging
-
- Set-AzureRmResource -PropertyObject $PropertiesObject -ResourceGroupName SONYRG  `
--ResourceType Microsoft.Web/sites/slots/sourcecontrols `
--ResourceName $webappname/staging/web -ApiVersion 2015-08-01 -Force
 
 # Create user object
 $cred = Get-Credential -Message "Enter a username and password for the virtual machine."
@@ -76,12 +75,6 @@ New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG  `
 
 # Create SQL Database in SQL Database Server
 New-AzureRMSQLDatabase -ServerName $ServerName -DatabaseName SONYAPP -ResourceGroupName $ResourceGroup `
-
-# Create an App Service plan
-$appServicePlan = New-AzureRmAppServicePlan -Name SONYRG Asp -ResourceGroupName SONYRG  -Tier Basic -Location westus
-
-# Create an webApp
-$webApp = New-AzureRmWebApp -ResourceGroupName SONYRG  -AppServicePlan $appServicePlan.Id -Name SONYRG Site -Location westus
 
 $appReg = .\CreateAppRegForAADAuth.ps1 -Environment AzureCloud -SiteUri $webAppUrl
 .\SetAADAuthWebApp.ps1 -Environment AzureUsGovernment -ResourceGroupName SONYRG  -WebAppName SONYRG Site -ClientId $appReg.ClientId -ClientSecret $appReg.ClientSecret -IssuerUrl $appReg.IssuerUrl
