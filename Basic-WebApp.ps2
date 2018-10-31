@@ -67,10 +67,6 @@ New-AzureRmVM -ResourceGroupName $resourceGroup -Location $location -VM $vmConfi
 # Create a SQL Database Server
 New-AzureRMSQLServer -ServerName $ServerName -Location $Location -SqlAdministratorCredentials $SqlServerPassword -ResourceGroupName $ResourceGroup `
 
-#Create a deployment slot with the name "staging".
-New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG  `
--Slot staging
-
 # Create SQL Database in SQL Database Server
 New-AzureRMSQLDatabase -ServerName $ServerName -DatabaseName SONYAPP -ResourceGroupName $ResourceGroup `
 
