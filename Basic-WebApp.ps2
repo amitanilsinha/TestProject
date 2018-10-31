@@ -1,4 +1,8 @@
-$ResourceGroup="LGRG"
+Connect-AzureRmAccount 
+# Type URL with a public GitHub repo URL
+$gitrepo="https://github.com/amitanilsinha.git"
+#Variables
+$ResourceGroup="SONYRG"
 $Location="westus"
 $StorageName="kunalnewstorage"
 $ServerName="SONYSERVER2"
@@ -7,11 +11,10 @@ $EndIP="0.0.0.0"
 $Username="kunal"
 $Password="Admin@123"
 $SqlServerPassword=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Username,(ConvertTo-SecureString -String $Password -AsPlainText -Force)
-$vmName="LGRG VM"
-$webappname="New-AzureRmWebApp"
+$vmName="SONYRG VM"
 
 # Create a resource group.
-New-AzureRmResourceGroup -Name LGRG  -Location $location
+New-AzureRmResourceGroup -Name SONYRG  -Location $location
 
 # Create Storage Account
 New-AzureRMStorageAccount -Name $StorageName -ResourceGroupName $ResourceGroup -Location $Location -SkuName Standard_LRS
@@ -20,10 +23,10 @@ New-AzureRMStorageAccount -Name $StorageName -ResourceGroupName $ResourceGroup -
 $StorageKey=(Get-AzureRMStorageAccountKey -ResourceGroupName $ResourceGroup -Name $StorageName).Value[0]
 
 #Create a deployment slot with the name "staging".
-New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName LGRG  `
+New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG  `
 -Slot staging
 
- Set-AzureRmResource -PropertyObject $PropertiesObject -ResourceGroupName LGRG  `
+ Set-AzureRmResource -PropertyObject $PropertiesObject -ResourceGroupName SONYRG  `
 -ResourceType Microsoft.Web/sites/slots/sourcecontrols `
 -ResourceName $webappname/staging/web -ApiVersion 2015-08-01 -Force
 
@@ -68,18 +71,18 @@ New-AzureRmVM -ResourceGroupName $resourceGroup -Location $location -VM $vmConfi
 New-AzureRMSQLServer -ServerName $ServerName -Location $Location -SqlAdministratorCredentials $SqlServerPassword -ResourceGroupName $ResourceGroup `
 
 #Create a deployment slot with the name "staging".
-New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName LGRG  `
+New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG  `
 -Slot staging
 
 # Create SQL Database in SQL Database Server
 New-AzureRMSQLDatabase -ServerName $ServerName -DatabaseName SONYAPP -ResourceGroupName $ResourceGroup `
 
 # Create an App Service plan
-$appServicePlan = New-AzureRmAppServicePlan -Name LGRG Asp -ResourceGroupName LGRG  -Tier Basic -Location westus
+$appServicePlan = New-AzureRmAppServicePlan -Name SONYRG Asp -ResourceGroupName SONYRG  -Tier Basic -Location westus
 
 # Create an webApp
-$webApp = New-AzureRmWebApp -ResourceGroupName LGRG  -AppServicePlan $appServicePlan.Id -Name LGRG Site -Location westus
+$webApp = New-AzureRmWebApp -ResourceGroupName SONYRG  -AppServicePlan $appServicePlan.Id -Name SONYRG Site -Location westus
 
 $appReg = .\CreateAppRegForAADAuth.ps1 -Environment AzureCloud -SiteUri $webAppUrl
-.\SetAADAuthWebApp.ps1 -Environment AzureUsGovernment -ResourceGroupName LGRG  -WebAppName LGRG Site -ClientId $appReg.ClientId -ClientSecret $appReg.ClientSecret -IssuerUrl $appReg.IssuerUrl
+.\SetAADAuthWebApp.ps1 -Environment AzureUsGovernment -ResourceGroupName SONYRG  -WebAppName SONYRG Site -ClientId $appReg.ClientId -ClientSecret $appReg.ClientSecret -IssuerUrl $appReg.IssuerUrl
 
