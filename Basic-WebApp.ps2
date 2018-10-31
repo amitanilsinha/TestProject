@@ -1,37 +1,29 @@
-Connect-AzureRmAccount 
-# Replace the following URL with a public GitHub repo URL
-$gitrepo="https://github.com/amitanilsinha.git"
-#Variables
-$ResourceGroup="SONYRG"
-$AppName="SONYAPP"
+$ResourceGroup="LGRG"
 $Location="westus"
+$StorageName="kunalnewstorage"
 $ServerName="SONYSERVER2"
 $StartIP="0.0.0.0"
 $EndIP="0.0.0.0"
 $Username="kunal"
 $Password="Admin@123"
 $SqlServerPassword=New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $Username,(ConvertTo-SecureString -String $Password -AsPlainText -Force)
-$webappname="SONYWEBapp$(Get-Random)"
-$vmName="SONYRGVM"
+$vmName="LGRG VM"
+$webappname="New-AzureRmWebApp"
+
 # Create a resource group.
-New-AzureRmResourceGroup -Name SONYRG -Location $location
+New-AzureRmResourceGroup -Name LGRG  -Location $location
 
-# Create an App Service plan in Free tier.
-New-AzureRmAppServicePlan -Name $webappname -Location $location `
--ResourceGroupName SONYRG -Tier Free
+# Create Storage Account
+New-AzureRMStorageAccount -Name $StorageName -ResourceGroupName $ResourceGroup -Location $Location -SkuName Standard_LRS
 
-# Create a web app.
-New-AzureRmWebApp -Name $webappname -Location $location `
--AppServicePlan $webappname -ResourceGroupName SONYRG
-
-# Upgrade App Service plan to Standard tier (minimum required by deployment slots)
-Set-AzureRmAppServicePlan -Name $webappname -ResourceGroupName SONYRG `
--Tier Standard
+# Get Connection String for Storage Account
+$StorageKey=(Get-AzureRMStorageAccountKey -ResourceGroupName $ResourceGroup -Name $StorageName).Value[0]
 
 #Create a deployment slot with the name "staging".
-New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG `
+New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName LGRG  `
 -Slot staging
-Set-AzureRmResource -PropertyObject $PropertiesObject -ResourceGroupName SONYRG `
+
+ Set-AzureRmResource -PropertyObject $PropertiesObject -ResourceGroupName LGRG  `
 -ResourceType Microsoft.Web/sites/slots/sourcecontrols `
 -ResourceName $webappname/staging/web -ApiVersion 2015-08-01 -Force
 
@@ -65,6 +57,7 @@ $nic = New-AzureRmNetworkInterface -Name myNic -ResourceGroupName $resourceGroup
 # Create a virtual machine configuration
 $vmConfig = New-AzureRmVMConfig -VMName $vmName -VMSize Standard_D1 | `
 Set-AzureRmVMOperatingSystem -Windows -ComputerName $vmName -Credential $cred | `
+
 Set-AzureRmVMSourceImage -PublisherName MicrosoftWindowsServer -Offer WindowsServer -Skus 2016-Datacenter -Version latest | `
 Add-AzureRmVMNetworkInterface -Id $nic.Id
 
@@ -75,8 +68,18 @@ New-AzureRmVM -ResourceGroupName $resourceGroup -Location $location -VM $vmConfi
 New-AzureRMSQLServer -ServerName $ServerName -Location $Location -SqlAdministratorCredentials $SqlServerPassword -ResourceGroupName $ResourceGroup `
 
 #Create a deployment slot with the name "staging".
-New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName SONYRG `
+New-AzureRmWebAppSlot -Name $webappname -ResourceGroupName LGRG  `
 -Slot staging
 
 # Create SQL Database in SQL Database Server
 New-AzureRMSQLDatabase -ServerName $ServerName -DatabaseName SONYAPP -ResourceGroupName $ResourceGroup `
+
+# Create an App Service plan
+$appServicePlan = New-AzureRmAppServicePlan -Name LGRG Asp -ResourceGroupName LGRG  -Tier Basic -Location westus
+
+# Create an webApp
+$webApp = New-AzureRmWebApp -ResourceGroupName LGRG  -AppServicePlan $appServicePlan.Id -Name LGRG Site -Location westus
+
+$appReg = .\CreateAppRegForAADAuth.ps1 -Environment AzureCloud -SiteUri $webAppUrl
+.\SetAADAuthWebApp.ps1 -Environment AzureUsGovernment -ResourceGroupName LGRG  -WebAppName LGRG Site -ClientId $appReg.ClientId -ClientSecret $appReg.ClientSecret -IssuerUrl $appReg.IssuerUrl
+
