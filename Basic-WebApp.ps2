@@ -17,11 +17,9 @@ $vmName="SONYRG VM"
 # Create a resource group.
 New-AzureRmResourceGroup -Name SONYRG  -Location $location
 
-# Create an App Service plan
-$appServicePlan = New-AzureRmAppServicePlan -Name SONYRG Asp -ResourceGroupName SONYRG  -Tier Basic -Location westus
-
-# Create an webApp
-$webApp = New-AzureRmWebApp -ResourceGroupName SONYRG  -AppServicePlan $appServicePlan.Id -Name SONYRG Site -Location westus
+# Create an App Service plan and WEB App
+$appServicePlan = New-AzureRmAppServicePlan -Name SONYRGAsp -ResourceGroupName SONYRG -Tier Basic -Location westus
+$webApp = New-AzureRmWebApp -ResourceGroupName SONYRG -AppServicePlan $appServicePlan.Id -Name SONYRGSite -Location westus
 
 # Create Storage Account
 New-AzureRMStorageAccount -Name $StorageName -ResourceGroupName $ResourceGroup -Location $Location -SkuName Standard_LRS
