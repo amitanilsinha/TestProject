@@ -1,0 +1,33 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworks_MyVNET_name": {
+            "value": null
+        },
+        "images_umbraco_with_iis_name": {
+            "value": null
+        },
+        "networkInterfaces_myVMNic_name": {
+            "value": null
+        },
+        "publicIPAddresses_myPublicIP_name": {
+            "value": null
+        },
+        "storageAccounts_blfwghcpum7z4sawinvm_name": {
+            "value": null
+        },
+        "subnets_Subnet_name": {
+            "value": null
+        },
+        "disks_SimpleWinVM_disk2_94838158501a4e8a98e35fcbcc34672d_name": {
+            "value": null
+        },
+        "disks_SimpleWinVM_OsDisk_1_65b9823d1c9940e6974aca792c0bd285_name": {
+            "value": null
+        },
+        "images_umbraco_with_iis_id": {
+            "value": null
+        }
+    }
+}

@@ -1,0 +1,277 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworks_MyVNET_name": {
+            "defaultValue": "MyVNET",
+            "type": "String"
+        },
+        "images_umbraco_with_iis_name": {
+            "defaultValue": "umbraco-with-iis",
+            "type": "String"
+        },
+        "networkInterfaces_myVMNic_name": {
+            "defaultValue": "myVMNic",
+            "type": "String"
+        },
+        "publicIPAddresses_myPublicIP_name": {
+            "defaultValue": "myPublicIP",
+            "type": "String"
+        },
+        "storageAccounts_blfwghcpum7z4sawinvm_name": {
+            "defaultValue": "blfwghcpum7z4sawinvm",
+            "type": "String"
+        },
+        "subnets_Subnet_name": {
+            "defaultValue": "Subnet",
+            "type": "String"
+        },
+        "disks_SimpleWinVM_disk2_94838158501a4e8a98e35fcbcc34672d_name": {
+            "defaultValue": "SimpleWinVM_disk2_94838158501a4e8a98e35fcbcc34672d",
+            "type": "String"
+        },
+        "disks_SimpleWinVM_OsDisk_1_65b9823d1c9940e6974aca792c0bd285_name": {
+            "defaultValue": "SimpleWinVM_OsDisk_1_65b9823d1c9940e6974aca792c0bd285",
+            "type": "String"
+        },
+        "images_umbraco_with_iis_id": {
+            "defaultValue": "/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/SimpleWinVM",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Compute/disks/SimpleWinVM_disk2_94838158501a4e8a98e35fcbcc34672d'.",
+            "type": "Microsoft.Compute/disks",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "name": "[parameters('disks_SimpleWinVM_disk2_94838158501a4e8a98e35fcbcc34672d_name')]",
+            "apiVersion": "2018-06-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "creationData": {
+                    "createOption": "Empty"
+                },
+                "diskSizeGB": 1023
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Compute/disks/SimpleWinVM_OsDisk_1_65b9823d1c9940e6974aca792c0bd285'.",
+            "type": "Microsoft.Compute/disks",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "name": "[parameters('disks_SimpleWinVM_OsDisk_1_65b9823d1c9940e6974aca792c0bd285_name')]",
+            "apiVersion": "2018-06-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "osType": "Windows",
+                "creationData": {
+                    "createOption": "FromImage",
+                    "imageReference": {
+                        "id": "/Subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/Providers/Microsoft.Compute/Locations/eastus/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/2016.127.20181218"
+                    }
+                },
+                "diskSizeGB": 127
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Compute/images/umbraco-with-iis'.",
+            "type": "Microsoft.Compute/images",
+            "name": "[parameters('images_umbraco_with_iis_name')]",
+            "apiVersion": "2018-06-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "sourceVirtualMachine": {
+                    "id": "[parameters('images_umbraco_with_iis_id')]"
+                },
+                "storageProfile": {
+                    "osDisk": {
+                        "osType": "Windows",
+                        "osState": "Generalized",
+                        "diskSizeGB": 127,
+                        "managedDisk": {
+                            "id": "[resourceId('Microsoft.Compute/disks', parameters('disks_SimpleWinVM_OsDisk_1_65b9823d1c9940e6974aca792c0bd285_name'))]"
+                        },
+                        "caching": "ReadWrite",
+                        "storageAccountType": "Standard_LRS"
+                    },
+                    "dataDisks": [
+                        {
+                            "lun": 0,
+                            "diskSizeGB": 1023,
+                            "managedDisk": {
+                                "id": "[resourceId('Microsoft.Compute/disks', parameters('disks_SimpleWinVM_disk2_94838158501a4e8a98e35fcbcc34672d_name'))]"
+                            },
+                            "caching": "None",
+                            "storageAccountType": "Standard_LRS"
+                        }
+                    ],
+                    "zoneResilient": false
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/disks', parameters('disks_SimpleWinVM_OsDisk_1_65b9823d1c9940e6974aca792c0bd285_name'))]",
+                "[resourceId('Microsoft.Compute/disks', parameters('disks_SimpleWinVM_disk2_94838158501a4e8a98e35fcbcc34672d_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Network/networkInterfaces/myVMNic'.",
+            "type": "Microsoft.Network/networkInterfaces",
+            "name": "[parameters('networkInterfaces_myVMNic_name')]",
+            "apiVersion": "2018-08-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "0165a03d-0f0a-49ec-9deb-d04f77ebbc8c",
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "etag": "W/\"758a4721-3cb5-48c1-bf77-92d75c608bb2\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "privateIPAddress": "10.0.0.4",
+                            "privateIPAllocationMethod": "Dynamic",
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myPublicIP_name'))]"
+                            },
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_MyVNET_name'), parameters('subnets_Subnet_name'))]"
+                            },
+                            "primary": true,
+                            "privateIPAddressVersion": "IPv4"
+                        }
+                    }
+                ],
+                "dnsSettings": {
+                    "dnsServers": [],
+                    "appliedDnsServers": []
+                },
+                "enableAcceleratedNetworking": false,
+                "enableIPForwarding": false,
+                "tapConfigurations": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_myPublicIP_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_MyVNET_name'), parameters('subnets_Subnet_name'))]"
+            ]
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Network/publicIPAddresses/myPublicIP'.",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "sku": {
+                "name": "Basic",
+                "tier": "Regional"
+            },
+            "name": "[parameters('publicIPAddresses_myPublicIP_name')]",
+            "apiVersion": "2018-08-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "1ac6e121-4df2-4938-91ac-447073752892",
+                "publicIPAddressVersion": "IPv4",
+                "publicIPAllocationMethod": "Dynamic",
+                "idleTimeoutInMinutes": 4,
+                "dnsSettings": {
+                    "domainNameLabel": "umbraco9",
+                    "fqdn": "umbraco9.eastus.cloudapp.azure.com"
+                },
+                "ipTags": []
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/MyVNET'.",
+            "type": "Microsoft.Network/virtualNetworks",
+            "name": "[parameters('virtualNetworks_MyVNET_name')]",
+            "apiVersion": "2018-08-01",
+            "location": "eastus",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "resourceGuid": "bc0d179e-cf1a-4db8-a187-65996fa25156",
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.0.0.0/16"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "Subnet",
+                        "etag": "W/\"77a423a8-929e-4777-9844-3b0b286dd3e7\"",
+                        "properties": {
+                            "provisioningState": "Succeeded",
+                            "addressPrefix": "10.0.0.0/24",
+                            "delegations": []
+                        }
+                    }
+                ],
+                "virtualNetworkPeerings": [],
+                "enableDdosProtection": false,
+                "enableVmProtection": false
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Storage/storageAccounts/blfwghcpum7z4sawinvm'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_blfwghcpum7z4sawinvm_name')]",
+            "apiVersion": "2018-07-01",
+            "location": "eastus",
+            "tags": {},
+            "scale": null,
+            "properties": {
+                "networkAcls": {
+                    "bypass": "AzureServices",
+                    "virtualNetworkRules": [],
+                    "ipRules": [],
+                    "defaultAction": "Allow"
+                },
+                "supportsHttpsTrafficOnly": false,
+                "encryption": {
+                    "services": {
+                        "file": {
+                            "enabled": true
+                        },
+                        "blob": {
+                            "enabled": true
+                        }
+                    },
+                    "keySource": "Microsoft.Storage"
+                }
+            },
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/01a345dc-4adf-40ab-94ae-4d15d0058a85/resourceGroups/rg2/providers/Microsoft.Network/virtualNetworks/MyVNET/subnets/Subnet'.",
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "name": "[concat(parameters('virtualNetworks_MyVNET_name'), '/', parameters('subnets_Subnet_name'))]",
+            "apiVersion": "2018-08-01",
+            "scale": null,
+            "properties": {
+                "provisioningState": "Succeeded",
+                "addressPrefix": "10.0.0.0/24",
+                "delegations": []
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_MyVNET_name'))]"
+            ]
+        }
+    ]
+}
